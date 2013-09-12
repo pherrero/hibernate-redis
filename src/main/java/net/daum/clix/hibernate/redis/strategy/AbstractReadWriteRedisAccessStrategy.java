@@ -1,6 +1,7 @@
 package net.daum.clix.hibernate.redis.strategy;
 
 import net.daum.clix.hibernate.redis.region.RedisTransactionalRegion;
+
 import org.hibernate.cache.CacheException;
 import org.hibernate.cache.spi.access.SoftLock;
 import org.hibernate.cfg.Settings;
@@ -17,12 +18,13 @@ import java.util.Comparator;
  */
 abstract class AbstractReadWriteRedisAccessStrategy<T extends RedisTransactionalRegion> extends AbstractRedisAccessStrategy<T> {
 
-    private final Comparator versionComparator;
+    private final Comparator<Object> versionComparator;
 
     /**
      * Create an access strategy wrapping the given region.
      */
-    AbstractReadWriteRedisAccessStrategy(T region, Settings settings) {
+    @SuppressWarnings("unchecked")
+	AbstractReadWriteRedisAccessStrategy(T region, Settings settings) {
         super(region, settings);
         this.versionComparator = region.getCacheDataDescription().getVersionComparator();
     }
@@ -120,7 +122,7 @@ abstract class AbstractReadWriteRedisAccessStrategy<T extends RedisTransactional
             return txTimestamp > this.txTimestamp;
         }
 
-        public boolean isWriteable(Object newVersion, Comparator versionComparator) {
+        public boolean isWriteable(Object newVersion, Comparator<Object> versionComparator) {
             return version != null && versionComparator.compare(version, newVersion) < 0;
         }
 

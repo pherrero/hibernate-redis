@@ -1,12 +1,12 @@
 package net.daum.clix.hibernate.redis.strategy;
 
 import net.daum.clix.hibernate.redis.region.RedisCollectionRegion;
+
 import org.hibernate.cache.CacheException;
 import org.hibernate.cache.spi.CollectionRegion;
 import org.hibernate.cache.spi.access.CollectionRegionAccessStrategy;
 import org.hibernate.cache.spi.access.SoftLock;
 import org.hibernate.cfg.Settings;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * User: jtlee

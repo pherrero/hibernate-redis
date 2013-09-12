@@ -1,21 +1,18 @@
 package net.daum.clix.hibernate.redis.region;
 
+import java.util.Properties;
+
 import net.daum.clix.hibernate.redis.RedisCache;
 import net.daum.clix.hibernate.redis.strategy.RedisAccessStrategyFactory;
+
 import org.hibernate.cache.spi.CacheDataDescription;
 import org.hibernate.cache.spi.TransactionalDataRegion;
 import org.hibernate.cfg.Settings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Properties;
 
 /**
  * @author 84june
  */
 public class RedisTransactionalRegion extends RedisRegion implements TransactionalDataRegion {
-
-	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Hibernate settings associated with the persistence unit.

@@ -1,21 +1,18 @@
 package net.daum.clix.hibernate.redis.region;
 
+import java.util.Properties;
+
 import net.daum.clix.hibernate.redis.RedisCache;
 import net.daum.clix.hibernate.redis.strategy.RedisAccessStrategyFactory;
+
 import org.hibernate.cache.CacheException;
 import org.hibernate.cache.spi.QueryResultsRegion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Properties;
 
 /**
  * @author jtlee
  * @author 84june
  */
 public class RedisQueryResultRegion extends RedisRegion implements QueryResultsRegion {
-
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public RedisQueryResultRegion(RedisAccessStrategyFactory accessStrategyFactory, RedisCache cache, Properties properties) {
         super(accessStrategyFactory, cache, properties);

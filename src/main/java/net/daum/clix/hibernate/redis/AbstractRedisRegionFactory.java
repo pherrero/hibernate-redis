@@ -1,5 +1,7 @@
 package net.daum.clix.hibernate.redis;
 
+import java.util.Properties;
+
 import net.daum.clix.hibernate.redis.jedis.JedisCacheImpl;
 import net.daum.clix.hibernate.redis.region.RedisCollectionRegion;
 import net.daum.clix.hibernate.redis.region.RedisEntityRegion;
@@ -7,15 +9,18 @@ import net.daum.clix.hibernate.redis.region.RedisQueryResultRegion;
 import net.daum.clix.hibernate.redis.region.RedisTimestampsRegion;
 import net.daum.clix.hibernate.redis.strategy.RedisAccessStrategyFactory;
 import net.daum.clix.hibernate.redis.strategy.RedisAccessStrategyFactoryImpl;
+
 import org.hibernate.cache.CacheException;
-import org.hibernate.cache.spi.*;
+import org.hibernate.cache.spi.CacheDataDescription;
+import org.hibernate.cache.spi.CollectionRegion;
+import org.hibernate.cache.spi.EntityRegion;
+import org.hibernate.cache.spi.QueryResultsRegion;
+import org.hibernate.cache.spi.RegionFactory;
+import org.hibernate.cache.spi.TimestampsRegion;
 import org.hibernate.cache.spi.access.AccessType;
 import org.hibernate.cfg.Settings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import redis.clients.jedis.JedisPool;
 
-import java.util.Properties;
+import redis.clients.jedis.JedisPool;
 
 /**
  * @author jtlee
@@ -23,12 +28,10 @@ import java.util.Properties;
  */
 abstract class AbstractRedisRegionFactory implements RegionFactory {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private static final long serialVersionUID = 1L;
 
 	protected JedisPool pool;
-
 	protected Properties properties;
-
 	protected Settings settings;
 
 	/**

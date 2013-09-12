@@ -1,6 +1,12 @@
 package net.daum.clix.test;
 
+import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+
 import net.daum.clix.Campaign;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,21 +14,13 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.service.Service;
+import org.hibernate.service.ServiceRegistry;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-
-import java.util.List;
-
-import static junit.framework.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * User: jtlee
@@ -45,7 +43,8 @@ public class CampaignTest {
         campaign.setName("campaign");
         campaign.setBudget(1000L);
         Long id = (Long) session.save(campaign);
-
+        
+        System.out.println("Generated ID: " + id);
         tx.commit();
 
     }
@@ -53,7 +52,19 @@ public class CampaignTest {
     @BeforeClass
     public static void setUp() {
 
-        sessionFactory = new Configuration().configure().buildSessionFactory();
+    	ServiceRegistry serviceRegistry = new ServiceRegistry() {
+
+			@Override
+			public ServiceRegistry getParentServiceRegistry() {
+				return null;
+			}
+
+			@Override
+			public <R extends Service> R getService(Class<R> serviceRole) {
+				return null;
+			} };
+			
+        sessionFactory = new Configuration().configure().buildSessionFactory(serviceRegistry);
 
         Session session = sessionFactory.getCurrentSession();
 
@@ -63,7 +74,8 @@ public class CampaignTest {
         campaign.setName("campaign2");
         campaign.setBudget(1000L);
         Long id = (Long) session.save(campaign);
-
+        
+        System.out.println("Generated ID: " + id);
         tx.commit();
     }
 
@@ -95,7 +107,9 @@ public class CampaignTest {
         criteria.setMaxResults(10);
         criteria.setCacheable(true);
 //        criteria.setCacheRegion("@Sorted_queryCache");
-        List<Campaign> campaigns = criteria.list();
+        
+        @SuppressWarnings("unchecked")
+		List<Campaign> campaigns = criteria.list();
 
         tx.commit();
 
@@ -115,7 +129,9 @@ public class CampaignTest {
         criteria.setMaxResults(10);
         criteria.setCacheable(true);
 //        criteria.setCacheRegion("@Sorted_queryCache");
-        List<Campaign> campaigns = criteria.list();
+        
+        @SuppressWarnings("unchecked")
+		List<Campaign> campaigns = criteria.list();
 
         tx.commit();
 
@@ -141,7 +157,9 @@ public class CampaignTest {
         criteria.setMaxResults(10);
         criteria.setCacheable(true);
 //        criteria.setCacheRegion("@Sorted_queryCache");
-        List<Campaign> campaigns = criteria.list();
+        
+        @SuppressWarnings("unchecked")
+		List<Campaign> campaigns = criteria.list();
 
         tx.rollback();
 
