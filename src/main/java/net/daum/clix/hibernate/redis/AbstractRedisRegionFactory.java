@@ -20,7 +20,7 @@ import org.hibernate.cache.spi.TimestampsRegion;
 import org.hibernate.cache.spi.access.AccessType;
 import org.hibernate.cfg.Settings;
 
-import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.ShardedJedisPool;
 
 /**
  * @author jtlee
@@ -30,7 +30,7 @@ abstract class AbstractRedisRegionFactory implements RegionFactory {
 
 	private static final long serialVersionUID = 1L;
 
-	protected JedisPool pool;
+	protected ShardedJedisPool pool;
 	protected Properties properties;
 	protected Settings settings;
 

@@ -1,11 +1,13 @@
 package net.daum.clix.hibernate.redis.jedis;
 
 import net.daum.clix.hibernate.redis.RedisCache;
+
 import org.hibernate.cache.CacheException;
 import org.springframework.core.serializer.support.DeserializingConverter;
 import org.springframework.core.serializer.support.SerializingConverter;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+
+import redis.clients.jedis.ShardedJedis;
+import redis.clients.jedis.ShardedJedisPool;
 
 /**
  * @author jtlee
@@ -13,14 +15,13 @@ import redis.clients.jedis.JedisPool;
  */
 public class JedisCacheImpl implements RedisCache {
 
-    private JedisPool jedisPool;
-
-    private Jedis jedis;
+    private ShardedJedisPool jedisPool;
+    private ShardedJedis jedis;
 
     private String regionName;
     private boolean locked = false;
 
-    public JedisCacheImpl(JedisPool jedisPool, String regionName) {
+    public JedisCacheImpl(ShardedJedisPool jedisPool, String regionName) {
         this.jedisPool = jedisPool;
         this.regionName = regionName;
         this.jedis = jedisPool.getResource();
@@ -49,12 +50,12 @@ public class JedisCacheImpl implements RedisCache {
 
     @Override
     public void remove(Object key) throws CacheException {
-        jedis.del(serializeObject(key.toString()));
+        jedis.del(key.toString());
     }
 
     @Override
     public boolean exists(String key) {
-        return jedis.exists(serializeObject(key.toString()));
+        return jedis.exists(key);
     }
 
     @Override
